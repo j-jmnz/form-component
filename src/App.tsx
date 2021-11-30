@@ -1,39 +1,47 @@
 import { FunctionComponent, SyntheticEvent } from 'react';
+import { useForm } from './common/FormContext';
 import Form from './Components/Form';
 import FormInput, { InputConfig } from './Components/FormInput';
 
+const usernameInputConfig: InputConfig = {
+    validation: {
+        required: true,
+        minLength: 6,
+    },
+    errorMessage:
+        'Username is required and should be at least 6 characters long.',
+};
+
+const emailInputConfig: InputConfig = {
+    validation: {
+        pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$',
+        required: true,
+    },
+    errorMessage:
+        'E-mail is required and it should follow an e-mail adrress pattern.',
+};
+
+const passwordInputConfig: InputConfig = {
+    validation: {
+        required: true,
+        pattern:
+            '(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z0-9]).*',
+    },
+    errorMessage:
+        'Password is required and it must contain at least 6 characters, one number, one uppercase and lowercase letter, and a special character',
+};
+
 const App: FunctionComponent = () => {
-    const usernameInputConfig: InputConfig = {
-        validation: {
-            required: true,
-            minLength: 6,
-        },
-        errorMessage:
-            'Username is required and should be at least 6 characters long.',
-    };
-
-    const emailInputConfig: InputConfig = {
-        validation: {
-            pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$',
-            required: true,
-        },
-        errorMessage:
-            'E-mail is required and it should follow an e-mail adrress pattern.',
-    };
-
-    const passwordInputConfig: InputConfig = {
-        validation: {
-            required: true,
-            pattern:
-                '(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z0-9]).*',
-        },
-        errorMessage:
-            'Password is required and it must contain at least 6 characters, one number, one uppercase and lowercase letter, and a special character',
-    };
+    const { form } = useForm();
 
     const onSubmit = (e: SyntheticEvent): void => {
         e.preventDefault();
-        alert('Your information was succesfully submitted');
+
+        alert(
+            `Your information was succesfully submitted:\n ${Object.values(
+                form
+            ).join('\n')}`
+        );
     };
 
     return (

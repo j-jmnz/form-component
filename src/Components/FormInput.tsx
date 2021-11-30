@@ -18,7 +18,7 @@ export interface InputConfig {
 interface Props {
     label: string;
     name: string;
-    config: InputConfig;
+    config?: InputConfig;
 }
 
 const FormInput: FunctionComponent<Props> = ({ label, name, config }) => {
@@ -34,9 +34,9 @@ const FormInput: FunctionComponent<Props> = ({ label, name, config }) => {
                 onChange={handleFormChange}
                 onBlur={() => setFocused(true)}
                 focused={focused.toString()}
-                {...config.validation}
+                {...config?.validation}
             />
-            <span>{config.errorMessage}</span>
+            <span>{config?.errorMessage}</span>
         </div>
     );
 };

@@ -2,45 +2,151 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+clone this repo, cd into the folder and
 
-### `npm start`
+```
+npm i
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+then run
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+npm start
+```
 
-### `npm test`
+## `Usage`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Example usage:
 
-### `npm run build`
+```tsx
+import { FunctionComponent, SyntheticEvent } from 'react';
+import { useForm } from './common/FormContext';
+import Form from './Components/Form';
+import FormInput, { InputConfig } from './Components/FormInput';
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const usernameInputConfig: InputConfig = {
+    validation: {
+        required: true,
+        minLength: 6,
+    },
+    errorMessage:
+        'Username is required and should be at least 6 characters long.',
+};
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+const ExampleUsage: FunctionComponent = () => {
+    const { form } = useForm();
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    const onSubmit = (e: SyntheticEvent): void => {
+        e.preventDefault();
 
-### `npm run eject`
+        alert(
+            `Your information was succesfully submitted:\n ${Object.values(
+                form
+            ).join('\n')}`
+        );
+    };
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    return (
+        <div>
+            <header>
+                <h1>Form Example</h1>
+                <Form onSubmit={onSubmit} btnText={'submit'}>
+                    <FormInput
+                        name='username'
+                        label='username'
+                        config={usernameInputConfig}
+                    />
+                    <FormInput name='password' label='password' />
+                </Form>
+            </header>
+        </div>
+    );
+};
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+export default ExampleUsage;
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The components that will need access to the form data should be wrapped by the form context provider.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Example:
 
-## Learn More
+```tsx
+import { FormContextProvider } from './common/FormContext';
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+ReactDOM.render(
+    <FormContextProvider>
+        <App />
+    </FormContextProvider>
+);
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### `Hooks`
+
+#### UseForm
+
+Gives access to two objects:
+
+```js
+const { form, handleFormChange } = useForm();
+```
+
+| -------------------|--------------------------------------------------------------|
+| `form` | Object that holds the form data submitted by the inputs |
+| `handleFormChange` | Mutates the form state of the context provider |
+
+The `form` object structure is as follows:
+
+```ts
+interface Form {
+    [key: string]: string | undefined;
+}
+```
+
+### `Components`
+
+There are two components `<Form>` and `<FormInput>`
+
+#### Form
+
+Takes in 2 properties:
+
+| Props      |                                                                            |
+| ---------- | -------------------------------------------------------------------------- |
+| `onSubmit` | Required. Function that defines what to do when the form data is submitted |
+| `btnText`  | Required. String that sets the text content of the submit button           |
+
+#### FormInput
+
+Takes in 3 properties:
+
+| Props    |                                                                                      |
+| -------- | ------------------------------------------------------------------------------------ |
+| `name`   | Required. String that sets the name necessary to identify the input in the form data |
+| `label`  | Required. String that sets the text content for the label                            |
+| `config` | Optional. Object that defines the validation configuration                           |
+
+### `Validation`
+
+The validation is handled by html buit-in form validation for simplicity and efficiency purposes.
+
+It is configured by passing in a configuration object to the 'FormInput' component.
+
+The config object structure looks as follows:
+
+```ts
+interface Validation {
+    required?: boolean;
+    minLength?: number;
+    maxLength?: number;
+    pattern?: string;
+}
+
+interface Config {
+    validation: Validation;
+    errorMessage?: string;
+}
+```
+
+The `errorMessage` will be shown when the defined validation is not fulfilled.
