@@ -162,9 +162,13 @@ interface Config {
 }
 ```
 
+The `InputConfig` type can be imported from `Components/FormInput`
+
 Example:
 
 ```tsx
+import { InputConfig } from './Components/FormInput';
+
 const emailInputConfig: InputConfig = {
     validation: {
         pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$',
