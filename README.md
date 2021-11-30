@@ -16,7 +16,7 @@ then run
 npm start
 ```
 
-## `Usage`
+## Usage
 
 Example usage:
 
@@ -92,9 +92,10 @@ Gives access to two objects:
 const { form, handleFormChange } = useForm();
 ```
 
-| -------------------|--------------------------------------------------------------|
-| `form` | Object that holds the form data submitted by the inputs |
-| `handleFormChange` | Mutates the form state of the context provider |
+|                    |                                                         |
+| ------------------ | ------------------------------------------------------- |
+| `form`             | Object that holds the form data submitted by the inputs |
+| `handleFormChange` | Mutates the form state of the context provider          |
 
 The `form` object structure is as follows:
 
@@ -117,6 +118,12 @@ Takes in 2 properties:
 | `onSubmit` | Required. Function that defines what to do when the form data is submitted |
 | `btnText`  | Required. String that sets the text content of the submit button           |
 
+Example:
+
+```tsx
+<Form onSubmit={onSubmit} btnText={'submit'}></Form>
+```
+
 #### FormInput
 
 Takes in 3 properties:
@@ -126,6 +133,12 @@ Takes in 3 properties:
 | `name`   | Required. String that sets the name necessary to identify the input in the form data |
 | `label`  | Required. String that sets the text content for the label                            |
 | `config` | Optional. Object that defines the validation configuration                           |
+
+Example:
+
+```tsx
+<FormInput name='username' label='username' config={usernameInputConfig} />
+```
 
 ### `Validation`
 
@@ -150,3 +163,10 @@ interface Config {
 ```
 
 The `errorMessage` will be shown when the defined validation is not fulfilled.
+
+## Guiding principles
+
+-   Reusability
+-   Simplicity
+-   Efficiency
+-   Minimal/small
