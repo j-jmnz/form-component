@@ -18,7 +18,7 @@ npm start
 
 ## Usage
 
-Example usage:
+Usage example:
 
 ```tsx
 import { FunctionComponent, SyntheticEvent } from 'react';
@@ -160,6 +160,19 @@ interface Config {
     validation: Validation;
     errorMessage?: string;
 }
+```
+
+Example:
+
+```tsx
+const emailInputConfig: InputConfig = {
+    validation: {
+        pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$',
+        required: true,
+    },
+    errorMessage:
+        'E-mail is required and it should follow an e-mail adrress pattern.',
+};
 ```
 
 The `errorMessage` will be shown when the defined validation is not fulfilled.
